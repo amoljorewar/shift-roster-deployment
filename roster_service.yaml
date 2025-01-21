@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: roster
+  namespace: roster
+spec:
+  selector:
+    app: roster
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      nodePort: 30000
+  type: NodePort
+  sessionAffinity: ClientIP
