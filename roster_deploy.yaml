@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: roster
+  namespace: roster
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: roster
+  template:
+    metadata:
+      labels:
+        app: roster
+    spec:
+      containers:
+        - name: roster
+          image: amoljorewar/shift-roster-app:v1.3
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: roster-storage
+              mountPath: /app/data
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+      volumes:
+        - name: roster-storage
+          persistentVolumeClaim:
+            claimName: roster-pvc
